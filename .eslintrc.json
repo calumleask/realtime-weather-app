@@ -8,7 +8,8 @@
     "extends": ["eslint:recommended", "plugin:react/recommended"],
     "globals": {
         "$": true,
-        "L": true
+        "L": true,
+        "require": true
     },
     "rules": {
         "quotes": [

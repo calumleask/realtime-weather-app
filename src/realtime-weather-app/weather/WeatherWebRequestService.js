@@ -2,6 +2,8 @@ import ES6Promise from "es6-promise";
 ES6Promise.polyfill();
 import fetch from "isomorphic-fetch";
 
+const config = require("~/config.json");
+
 import Weather from "~/weather/Weather";
 
 const kelvinToCelcius = (temp) => {
@@ -15,7 +17,7 @@ const metersPerSecToMilesPerHour = (speed) => {
 class WeatherWebRequestService {
 
     constructor() {
-        this._apiKey = "INSERT_OPEN_WEATHER_MAP_API_KEY_HERE";
+        this._apiKey = config.open_weather_map_api_key;
         this._urlRoot = "http://api.openweathermap.org/data/2.5/";
     }
 

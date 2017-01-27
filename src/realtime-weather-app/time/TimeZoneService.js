@@ -2,10 +2,12 @@ import ES6Promise from "es6-promise";
 ES6Promise.polyfill();
 import fetch from "isomorphic-fetch";
 
+const config = require("~/config.json");
+
 class TimeZoneService {
 
     constructor() {
-        this._username = "INSERT_GEONAMES_USERNAME_HERE";
+        this._username = config.geonames_username;
         this._urlRoot = "http://api.geonames.org/";
     }
 

@@ -1,0 +1,6 @@
+{
+    "eegeo_api_key": "INSERT_EEGEO_API_KEY_HERE",
+    "geonames_username": "INSERT_GEONAMES_USERNAME_HERE",
+    "mapzen_api_key": "INSERT_MAPZEN_API_KEY_HERE",
+    "open_weather_map_api_key": "INSERT_OPEN_WEATHER_MAP_API_KEY_HERE"
+}

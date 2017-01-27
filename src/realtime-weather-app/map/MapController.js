@@ -1,5 +1,7 @@
 import "eegeo.js";
 
+const config = require("~/config.json");
+
 const weathers = {
     "default": L.eeGeo.themes.weather.Clear,
     "clear": L.eeGeo.themes.weather.Clear,
@@ -36,7 +38,7 @@ class MapController {
             indoorsEnabled: false,
         };
 
-        this._map = L.eeGeo.map("map", "INSERT_EEGEO_API_KEY_HERE", options);
+        this._map = L.eeGeo.map("map", config.eegeo_api_key, options);
         this._map.attributionControl.addAttribution("weather provided by <a href='https://openweathermap.org/' target='_blank'>OpenWeatherMap</a>");
     }
 
