@@ -1,0 +1,40 @@
+{
+    "env": {
+        "browser": true
+    },
+    "plugins": [
+        "react"
+    ],
+    "extends": ["eslint:recommended", "plugin:react/recommended"],
+    "globals": {
+        "$": true,
+        "L": true
+    },
+    "rules": {
+        "quotes": [
+            "error",
+            "double"
+        ],
+        "semi": [
+            "error",
+            "always"
+        ],
+        "no-mixed-spaces-and-tabs": "off",
+        "no-implicit-globals": "error",
+        "eqeqeq": "error",
+        "no-unused-vars": [
+            "error", {
+                "vars": "all",
+                "args": "none"
+            }
+        ],
+        "react/prop-types": "off"
+    },
+    "parserOptions": {
+        "ecmaVersion": 7,
+        "sourceType": "module",
+        "ecmaFeatures": {
+            "jsx": true
+        }
+    }
+}

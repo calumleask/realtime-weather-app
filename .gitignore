@@ -1,0 +1,12 @@
+# Logs
+logs
+*.log
+nom-debug.log*
+
+# Deps
+node_modules
+
+# Outputs
+src/assets/javascripts/*.js*
+.sass-cache
+_site

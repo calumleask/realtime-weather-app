@@ -1,0 +1,8 @@
+# Site settings
+title: Real Time Weather
+description: > # 
+  Real time weather using eeGeo 3D maps
+
+# Build settings
+exclude: [src/realtime-weather-app, Gemfile, Gemfile.lock, package.json, webpack.config.js, node_modules/]
+markdown: kramdown
