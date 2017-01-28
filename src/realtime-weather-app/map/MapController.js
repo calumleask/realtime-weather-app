@@ -19,8 +19,6 @@ const times = {
     "night": L.eeGeo.themes.time.Night
 };
 
-const startLatLng = [55.948517, -3.199872];
-
 class MapController {
 
     constructor() {
@@ -33,8 +31,9 @@ class MapController {
 
     initialize() {
         let options = {
-            center: startLatLng,
-            zoom: 15,
+            center: L.latLng(config.start_location_latitude, config.start_location_longitude),
+            zoom: config.start_location_zoom,
+            headingDegrees: config.start_location_orientation_degrees,
             indoorsEnabled: false,
         };
 
@@ -44,12 +43,15 @@ class MapController {
 
     getCenter() {
         if (!this._map) {
-            return L.latLng(startLatLng);
+            return L.latLng(config.start_location_latitude, config.start_location_longitude);
         }
         return this._map.getCenter();
     }
 
     getCurrentZoomLevel() {
+        if (!this._map) {
+            return config.start_location_zoom;
+        }
         return this._map.getZoom();
     }
 

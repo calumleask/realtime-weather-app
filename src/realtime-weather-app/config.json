@@ -1,4 +1,8 @@
 {
+    "start_location_latitude": 55.948517,
+    "start_location_longitude": -3.199872,
+    "start_location_zoom": 15,
+    "start_location_orientation_degrees": 0.0,
     "eegeo_api_key": "INSERT_EEGEO_API_KEY_HERE",
     "geonames_username": "INSERT_GEONAMES_USERNAME_HERE",
     "mapzen_api_key": "INSERT_MAPZEN_API_KEY_HERE",
