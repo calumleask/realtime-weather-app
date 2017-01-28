@@ -1,26 +1,12 @@
 import React from "react";
 import { connect } from "react-redux";
 
+const config = require("~/config.json");
+
 import mapController from "~/map/MapController";
 import { closeMenu } from "~/searchbar/actions/SearchBarActions";
 
 import MenuOptionGroup from "~/searchbar/view/components/MenuOptionGroup.jsx";
-
-const locationJumps = [
-    { "name": "Chicago", "lat": 41.878114, "lng": -87.629798 },
-    { "name": "Dundee", "lat": 56.459911, "lng": -2.977959 },
-    { "name": "Edinburgh", "lat": 55.961559, "lng": -3.20994 },
-    { "name": "London", "lat": 51.501851, "lng": -0.118915 },
-    { "name": "Los Angeles", "lat": 34.050175, "lng": -118.260048 },
-    { "name": "New York", "lat": 40.703762, "lng": -74.013733 },
-    { "name": "Phoenix", "lat": 33.448443, "lng": -112.074475 },
-    { "name": "Pisa", "lat": 43.723268, "lng": 10.395842 },
-    { "name": "Portland", "lat": 45.523548, "lng": -122.676859 },
-    { "name": "San Francisco", "lat": 37.7858, "lng": -122.401 },
-    { "name": "Seattle", "lat": 47.60544, "lng": -122.334744 },
-    { "name": "Toronto", "lat": 43.655205, "lng": -79.382401 },
-    { "name": "Vancouver", "lat": 49.278643, "lng": -123.117482 }
-];
 
 class MenuContainer extends React.Component {
 
@@ -41,7 +27,7 @@ class MenuContainer extends React.Component {
   }
 
   _getLocationOptions() {
-    return locationJumps.map(location => ({
+    return config.location_jumps.map(location => ({
       label: location.name,
       value: {
         lat: location.lat,
