@@ -1,5 +1,3 @@
-import EventEmitter from "~/EventEmitter";
-
 import localTime from "~/time/Clock";
 import mapController from "~/map/MapController";
 import mapWeather from "~/weather/MapWeather";
@@ -8,11 +6,9 @@ import { notifyTimeOfDayChange } from "~/time/actions/TimeActions";
 
 const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
-class MapTime extends EventEmitter {
+class MapTime {
 
     constructor() {
-        super();
-
         this._observedTime = 0;
         this._shouldUpdateSunTimes = false;
         this._sunTimes = new SunTimes();
