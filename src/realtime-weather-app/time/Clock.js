@@ -1,16 +1,6 @@
 import EventEmitter from "~/EventEmitter";
 
-const ensureFormat = (i) => {
-  if (i < 10) {
-    i = "0" + i;
-  }
-  return i;
-};
-
-const convertTime = (time, offset) => {
-  const utcTime = time.getTime() - (time.getTimezoneOffset() * 60000);
-  return new Date(utcTime + (3600000 * offset));
-};
+import timeHelpers from "~/time/helpers/TimeHelpers";
 
 class Clock extends EventEmitter {
 
@@ -36,7 +26,7 @@ class Clock extends EventEmitter {
     }
 
     getDigitalString() {
-        return ensureFormat(this._hour) + ":" + ensureFormat(this._minute) + ":" + ensureFormat(this._second);
+        return timeHelpers.getDigitalString(this._hour, this._minute, this._second);
     }
 
     getUtcOffset() {
@@ -46,7 +36,7 @@ class Clock extends EventEmitter {
     setUtcOffset(utcOffset) {
         if (utcOffset === this._utcOffset) return;
         this._utcOffset = utcOffset;
-        this._date = convertTime(new Date(), this._utcOffset);
+        this._date = timeHelpers.convertTimeToUTC(new Date(), this._utcOffset);
 
         const minute = this._date.getMinutes();
         const notifyMinute = minute !== this._minute;
@@ -78,7 +68,7 @@ class Clock extends EventEmitter {
     }
 
     _update() {
-        this._date = convertTime(new Date(), this._utcOffset);
+        this._date = timeHelpers.convertTimeToUTC(new Date(), this._utcOffset);
         this._time = this._date.getTime();
 
         const second = this._date.getSeconds();
