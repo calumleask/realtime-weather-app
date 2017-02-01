@@ -1,17 +1,10 @@
 import Weather from "~/weather/Weather";
 
-const roundToNearest = (value, toNearest) => {
-    const remainder = value % toNearest;
-    if (remainder <= (toNearest / 2)) { 
-        return value - remainder;
-    } else {
-        return value + toNearest - remainder;
-    }
-};
+import mathHelpers from "~/math/helpers/MathHelpers";
 
 const roundTimeToNearestForecastTimeInterval = (time) => {
     const threeHours = 3 * 60 * 60 * 1000;
-    return roundToNearest(time, threeHours);
+    return mathHelpers.roundToNearest(time, threeHours);
 };
 
 export default class Forecast {

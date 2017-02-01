@@ -1,3 +1,4 @@
+import mathHelpers from "~/math/helpers/MathHelpers";
 
 let baseTime = 0;
 
@@ -8,18 +9,9 @@ const checkTime = (i) => {
     return i;
 };
 
-const roundToNearest = (value, toNearest) => {
-    const remainder = value % toNearest;
-    if (remainder <= (toNearest / 2)) { 
-        return value - remainder;
-    } else {
-        return value + toNearest - remainder;
-    }
-};
-
 export const calculateBaseTime = (localTime) => {
     const threeHours = 3 * 60 * 60 * 1000;
-    baseTime = roundToNearest(localTime, threeHours);
+    baseTime = mathHelpers.roundToNearest(localTime, threeHours);
     return baseTime;
 };
 
