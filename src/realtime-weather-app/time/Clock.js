@@ -51,7 +51,7 @@ class Clock extends EventEmitter {
         if (notifyMinute) this._emit("minute", this._time);
         if (notifyHour) this._emit("hour", this._time);
         if (notifyDay) this._emit("day", this._time);
-        if (notifyMinute) this._emit("timezonechange", this._time);
+        if (notifyHour || notifyMinute) this._emit("timezonechange", this._time);
     }
 
     getCountry() {
