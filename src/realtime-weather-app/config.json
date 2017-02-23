@@ -8,6 +8,7 @@
     "mapzen_api_key": "INSERT_MAPZEN_API_KEY_HERE",
     "open_weather_map_api_key": "INSERT_OPEN_WEATHER_MAP_API_KEY_HERE",
     "location_jumps": [
+        { "name": "Bangkok", "lat": 13.747950, "lng": 100.532809 },
         { "name": "Chicago", "lat": 41.878114, "lng": -87.629798 },
         { "name": "Dundee", "lat": 56.459911, "lng": -2.977959 },
         { "name": "Edinburgh", "lat": 55.961559, "lng": -3.20994 },
