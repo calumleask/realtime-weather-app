@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "webpack -d --config webpack.config.js --progress --watch",
+    "production": "webpack -p --config webpack.config.production.js --progress",
     "lint": "eslint --ext .js --ext .jsx src/realtime-weather-app -c .eslintrc.json"
   },
   "author": "Calum Leask",

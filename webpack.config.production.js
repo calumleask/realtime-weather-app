@@ -27,13 +27,27 @@ var config = {
       }
     ]
   },
-  
+
   node: {
     console: true,
     fs: 'empty',
     net: 'empty',
     tls: 'empty'
-  }
+  },
+
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env':{
+        'NODE_ENV': JSON.stringify('production')
+      }
+    }),
+    
+    new webpack.optimize.UglifyJsPlugin({
+      compress:{
+        warnings: false
+      }
+    })
+  ]
 };
 
 module.exports = config;
