@@ -6,9 +6,11 @@ class TimeHelpers {
         this._hour = 3600000;
     }
 
-    convertTimeToUTC(time, utcOffsetInHours) {
-        const utcTime = time.getTime() - (time.getTimezoneOffset() * this._minute);
-        return new Date(utcTime + (this._hour * utcOffsetInHours));
+    addOffset(time, offset) {
+        if (time instanceof Date) {
+            return new Date(time.getTime() + (this._hour * offset));
+        }
+        return time + (this._hour * offset);
     }
 
     getDigitalString(hours, minutes, seconds) {

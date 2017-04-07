@@ -11,8 +11,8 @@ export default class ForecastRepository {
         return this._forecasts[id] || new Forecast();
     }
 
-    hasForecastAtLocation(id) {
-        return this._forecasts[id] && this._forecasts[id].hasForecast();
+    hasForecastAtLocation(locationId) {
+        return this._forecasts[locationId] && this._forecasts[locationId].hasForecast();
     }
 
     getCurrentWeatherAtLocation(locationId) {
@@ -25,20 +25,20 @@ export default class ForecastRepository {
         return time ? forecast.getWeatherAtTime(time) : forecast.getCurrentWeather();
     }
 
-    updateCurrentWeatherAtLocation(id, weather) {
-        if (!this._forecasts[id]) {
-            this._forecasts[id] = new Forecast();
+    setCurrentWeatherAtLocation(locationId, weather) {
+        if (!this._forecasts[locationId]) {
+            this._forecasts[locationId] = new Forecast();
         }
-        this._forecasts[id].setCurrentWeather(weather);
+        this._forecasts[locationId].setCurrentWeather(weather);
     }
 
-    updateForecastAtLocationFromArray(id, weatherArray) {
-        if (!this._forecasts[id]) {
-            this._forecasts[id] = new Forecast();
+    setForecastAtLocationFromArray(locationId, weatherArray) {
+        if (!this._forecasts[locationId]) {
+            this._forecasts[locationId] = new Forecast();
         }
         weatherArray.forEach((weather) => {
             const time = weather.time;
-            this._forecasts[id].setWeatherAtTime(new Weather(weather.code, {
+            this._forecasts[locationId].setWeatherAtTime(new Weather(weather.code, {
                 temperature: weather.temperature,
                 maxTemperature: weather.maxTemperature,
                 minTemperature: weather.minTemperature,
@@ -47,5 +47,13 @@ export default class ForecastRepository {
                 windSpeed: weather.windSpeed
             }), time);
         });
+    }
+
+    updateCurrentWeatherAtAllLocations(time) {
+        for (let locationId in this._forecasts) {
+            const forecast = this._forecasts[locationId];
+            const newCurrentWeather = forecast.getWeatherAtTime(time);
+            forecast.setCurrentWeather(newCurrentWeather);
+        }
     }
 }

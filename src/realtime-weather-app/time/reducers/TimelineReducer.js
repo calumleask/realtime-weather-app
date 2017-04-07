@@ -7,15 +7,17 @@ const defaultState = {
 };
 
 export const timeline = (state = defaultState, action) => {
+	const { payload } = action;
+
 	switch (action.type) {
 		case UPDATE_TIMELINE_BASE_TIME:
 			return Object.assign({}, state, {
-				baseTime: action.payload.baseTime
+				baseTime: payload.baseTime,
 			});
 
 		case SET_ACTIVE_TIMELINE_INDEX:
 			return Object.assign({}, state, {
-				activeIndex: action.payload.index
+				activeIndex: payload.index
 			});
 
 		default:

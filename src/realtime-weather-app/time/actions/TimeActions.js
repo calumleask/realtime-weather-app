@@ -2,11 +2,13 @@ import store, { dispatch } from "~/stores/Store";
 
 import TimeZoneService from "~/time/TimeZoneService";
 
-import localTime from "~/time/Clock";
+import clock from "~/time/Clock";
+import localTime from "~/time/LocalTime";
 import mapController from "~/map/MapController";
 import mapTime from "~/time/MapTime";
-import { buildUpdateLocalTimeAction, buildUpdateTimeOfDayAction, buildSetActiveTimelineIndexAction, buildUpdateTimelineBaseTimeAction } from "~/time/actions/TimeActionBuilder";
-import { getTimeAtIndex, calculateBaseTime } from "~/time/helpers/TimelineHelpers";
+import weatherService from "~/weather/WeatherService";
+import { buildUpdateLocalTimeAction, buildUpdateTimeOfDayAction, buildSetActiveTimelineIndexAction, buildUpdateTimelineBaseTimeAction, buildUpdateDstOffsetAction } from "~/time/actions/TimeActionBuilder";
+import { getTimeAtIndex, getReadableTimeAtIndex, calculateBaseTime } from "~/time/helpers/TimelineHelpers";
 
 export const getTimeZone = () => {
     const latLng = mapController.getCenter();
@@ -15,13 +17,14 @@ export const getTimeZone = () => {
     .then(response => response.json())
     .then(result => {
         console.log(result);
-        const utcOffset = result.rawOffset;
+        const utc = result.rawOffset;
+        const dst = result.dstOffset;
         const country = result.countryName;
-        const prevUtcOffset = localTime.getUtcOffset();
-        localTime.setUtcOffset(utcOffset);
+        const prevDst = localTime.getOffsets().dst;
+        localTime.setOffsets(utc, dst);
         localTime.setCountry(country);
 
-        if (utcOffset !== prevUtcOffset) {
+        if (dst !== prevDst) {
             dispatch(buildSetActiveTimelineIndexAction(0));
         }
     })
@@ -34,7 +37,8 @@ export const setActiveTimelineIndex = (index) => {
 	return (dispatch) => {
         if (index > 0) {
             const timeAtTimelineIndex = getTimeAtIndex(index);
-            mapTime.observeFixedTime(timeAtTimelineIndex);
+            const readableTimeAtIndex = getReadableTimeAtIndex(index);
+            mapTime.observeFixedTime(timeAtTimelineIndex, readableTimeAtIndex);
         }
         else {
             mapTime.observeLocalTime();
@@ -43,18 +47,9 @@ export const setActiveTimelineIndex = (index) => {
 	};
 };
 
-export const notifyTimelineBaseTimeChange = (baseTime) => {
+const notifyTimelineBaseTimeChange = (baseTime) => {
+    weatherService.updateCurrentWeatherTime(baseTime);
     dispatch(buildUpdateTimelineBaseTimeAction(baseTime));
-};
-
-export const notifyLocalTimeChange = (localTime) => {
-    dispatch(buildUpdateLocalTimeAction(localTime));
-
-    const prevTimelineBaseTime = store.getState().timeline.baseTime;
-    const currentTimelineBaseTime = calculateBaseTime(localTime);
-    if (currentTimelineBaseTime !== prevTimelineBaseTime) {
-        notifyTimelineBaseTimeChange(currentTimelineBaseTime);
-    }
 };
 
 export const notifyTimeOfDayChange = (timeOfDay) => {
@@ -62,5 +57,21 @@ export const notifyTimeOfDayChange = (timeOfDay) => {
     dispatch(buildUpdateTimeOfDayAction(timeOfDay));
 };
 
-localTime.on("second", notifyLocalTimeChange);
-localTime.on("timezonechange", notifyLocalTimeChange);
+const onSecond = (event) => {
+    dispatch(buildUpdateLocalTimeAction(event.time));
+
+    const prevTimelineBaseTime = store.getState().timeline.baseTime;
+    const currentTimelineBaseTime = calculateBaseTime(clock.getTime(), localTime.getOffsets().dst);
+    if (currentTimelineBaseTime !== prevTimelineBaseTime) {
+        notifyTimelineBaseTimeChange(currentTimelineBaseTime);
+        const timelineActiveIndex = store.getState().timeline.activeIndex;
+        dispatch(setActiveTimelineIndex(Math.max(0, timelineActiveIndex - 1)));
+    }
+};
+
+const onTimeZoneChange = (event) => {
+    dispatch(buildUpdateDstOffsetAction(event.dst));
+};
+
+clock.on("second", onSecond);
+localTime.on("timezonechange", onTimeZoneChange);

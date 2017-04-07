@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import localTime from "~/time/Clock";
+import clock from "~/time/Clock";
 import mapController from "~/map/MapController";
 import mapTime from "~/time/MapTime";
 import mapWeather from "~/weather/MapWeather";
@@ -21,7 +21,7 @@ class MapContainer extends React.Component {
 
 	componentDidMount() {
 		mapController.initialize();
-		localTime.start();
+		clock.start();
 		mapTime.initialize();
 		mapWeather.initialize();
 		getTimeZone();

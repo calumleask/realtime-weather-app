@@ -63,7 +63,8 @@ class WeatherTimelineContainer extends React.Component {
 const mapStateToProps = (state) => ({
     baseTime: state.timeline.baseTime,
     activeIndex: state.timeline.activeIndex,
-    maxIndex: state.timeline.maxIndex
+    maxIndex: state.timeline.maxIndex,
+    dstOffset: state.time.dstOffset
 });
 
 const mapDispatchToProps = (dispatch) => ({

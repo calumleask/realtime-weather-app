@@ -19,10 +19,14 @@ class WeatherService {
             if (!locationArray) return;
             locationArray.forEach((location) => {
                 locationService.add(location);
-                this._forecastRepository.updateCurrentWeatherAtLocation(location.id, location.weather);
+                this._forecastRepository.setCurrentWeatherAtLocation(location.id, location.weather);
             });
             mapWeather.updateNearestLocation();
         });
+    }
+
+    updateCurrentWeatherTime(time) {
+        this._forecastRepository.updateCurrentWeatherAtAllLocations(time);
     }
     
     fetchWeatherAtLocationAndTime(locationId, time, callback) {
@@ -45,7 +49,7 @@ class WeatherService {
         weatherWebRequestService.getForecastForLocationId(locationId)
         .then(weatherArray => {
             if (!weatherArray) return;
-            this._forecastRepository.updateForecastAtLocationFromArray(locationId, weatherArray);
+            this._forecastRepository.setForecastAtLocationFromArray(locationId, weatherArray);
             callback(this._forecastRepository.get(locationId));
         })
         .catch(error => {

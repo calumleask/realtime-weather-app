@@ -1,20 +1,16 @@
 import EventEmitter from "~/EventEmitter";
 
-import timeHelpers from "~/time/helpers/TimeHelpers";
-
 class Clock extends EventEmitter {
 
     constructor() {
         super();
 
-        this._date = null;
+        this._date = new Date();
         this._time = 0;
         this._day = 0;
         this._hour = 0;
         this._minute = 0;
         this._second = 0;
-        this._utcOffset = 0;
-        this._country = "N/A";
     }
 
     start() {
@@ -25,41 +21,8 @@ class Clock extends EventEmitter {
         return this._time;
     }
 
-    getDigitalString() {
-        return timeHelpers.getDigitalString(this._hour, this._minute, this._second);
-    }
-
-    getUtcOffset() {
-        return this._utcOffset;
-    }
-
-    setUtcOffset(utcOffset) {
-        if (utcOffset === this._utcOffset) return;
-        this._utcOffset = utcOffset;
-        this._date = timeHelpers.convertTimeToUTC(new Date(), this._utcOffset);
-
-        const minute = this._date.getMinutes();
-        const notifyMinute = minute !== this._minute;
-        this._minute = minute;
-        const hour = this._date.getHours();
-        const notifyHour = hour !== this._hour;
-        this._hour = hour;
-        const day = this._date.getDay();
-        const notifyDay = day !== this._day;
-        this._day = day;
-        
-        if (notifyMinute) this._emit("minute", this._time);
-        if (notifyHour) this._emit("hour", this._time);
-        if (notifyDay) this._emit("day", this._time);
-        if (notifyHour || notifyMinute) this._emit("timezonechange", this._time);
-    }
-
-    getCountry() {
-        return this._country;
-    }
-
-    setCountry(country) {
-        this._country = country;
+    getSecond() {
+        return this._second;
     }
 
     _tick() {
@@ -68,28 +31,28 @@ class Clock extends EventEmitter {
     }
 
     _update() {
-        this._date = timeHelpers.convertTimeToUTC(new Date(), this._utcOffset);
+        this._date = new Date();
         this._time = this._date.getTime();
 
-        const second = this._date.getSeconds();
+        const second = this._date.getUTCSeconds();
         const notifySecond = second !== this._second;
         this._second = second;
-        const minute = this._date.getMinutes();
+        const minute = this._date.getUTCMinutes();
         const notifyMinute = minute !== this._minute;
         this._minute = minute;
-        const hour = this._date.getHours();
+        const hour = this._date.getUTCHours();
         const notifyHour = hour !== this._hour;
         this._hour = hour;
-        const day = this._date.getDay();
+        const day = this._date.getUTCDay();
         const notifyDay = day !== this._day;
         this._day = day;
         
-        if (notifySecond) this._emit("second", this._time);
-        if (notifyMinute) this._emit("minute", this._time);
-        if (notifyHour) this._emit("hour", this._time);
-        if (notifyDay) this._emit("day", this._time);
+        if (notifySecond) this._emit("second", { date: this._date, time: this._time, second: this._second });
+        if (notifyMinute) this._emit("minute", { date: this._date, time: this._time, minute: this._minute });
+        if (notifyHour) this._emit("hour", { date: this._date, time: this._time, hour: this._hour });
+        if (notifyDay) this._emit("day", { date: this._date, time: this._time, day: this._day });
     }
 }
 
-const localTime = new Clock;
-export default localTime;
+const clock = new Clock;
+export default clock;

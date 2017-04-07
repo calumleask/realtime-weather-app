@@ -1,6 +1,6 @@
 import { dispatch } from "~/stores/Store";
 
-import localTime from "~/time/Clock";
+import localTime from "~/time/LocalTime";
 import locationService from "~/weather/LocationService";
 import mapController from "~/map/MapController";
 

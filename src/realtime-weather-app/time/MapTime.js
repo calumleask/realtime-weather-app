@@ -1,7 +1,9 @@
-import localTime from "~/time/Clock";
+import SunTimes from "~/time/SunTimes";
+
+import clock from "~/time/Clock";
+import localTime from "~/time/LocalTime";
 import mapController from "~/map/MapController";
 import mapWeather from "~/weather/MapWeather";
-import SunTimes from "~/time/SunTimes";
 import { notifyTimeOfDayChange } from "~/time/actions/TimeActions";
 
 const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -9,6 +11,7 @@ const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", 
 class MapTime {
 
     constructor() {
+        this._observingLocaLtime = true;
         this._observedTime = 0;
         this._shouldUpdateSunTimes = false;
         this._sunTimes = new SunTimes();
@@ -16,34 +19,33 @@ class MapTime {
 
         this._onSecond = this._onSecond.bind(this);
         this._queueSunTimesUpdate = this._queueSunTimesUpdate.bind(this);
-        this._updateObservedTime = this._updateObservedTime.bind(this);
         this._updateSunTimes = this._updateSunTimes.bind(this);
         this._updateTimeOfDay = this._updateTimeOfDay.bind(this);
     }
 
     initialize() {
         this.observeLocalTime();
-        localTime.on("second", this._onSecond);
+        clock.on("second", this._onSecond);
         localTime.on("timezonechange", this._updateSunTimes);
         mapController.registerOnLocationChangeCallback(this._updateSunTimes);
         mapController.registerOnPanCallback(this._queueSunTimesUpdate);
     }
 
     observeLocalTime() {
-        localTime.on("second", this._updateObservedTime);
+        this._observingLocaLtime = true;
+        this._observedTime = localTime.getTime();
         localTime.on("day", this._updateSunTimes);
-        localTime.on("minute", this._updateTimeOfDay);
-        this._updateObservedTime(localTime.getTime());
+        clock.on("minute", this._updateTimeOfDay);
         this._updateSunTimes();
         this._updateTimeOfDay();
         mapWeather.observeCurrentWeather();
     }
 
-    observeFixedTime(time) {
-        localTime.off("second", this._updateObservedTime);
-        localTime.off("day", this._updateSunTimes);
-        localTime.off("minute", this._updateTimeOfDay);
-        this._updateObservedTime(time);
+    observeFixedTime(time, readableTime) {
+        this._observingLocaLtime = false;
+        clock.off("day", this._updateSunTimes);
+        clock.off("minute", this._updateTimeOfDay);
+        this._observeFixedTime(readableTime);
         this._updateSunTimes();
         this._updateTimeOfDay();
         mapWeather.observeWeatherAtTime(time);
@@ -68,6 +70,11 @@ class MapTime {
     }
 
     _onSecond() {
+        // Update observed time
+        if (this._observingLocaLtime) {
+            this._observedTime = localTime.getTime();
+        }
+
         if (this._shouldUpdateSunTimes) {
             this._updateSunTimes();
             this._shouldUpdateSunTimes = false;
@@ -78,7 +85,7 @@ class MapTime {
         this._shouldUpdateSunTimes = true;
     }
 
-    _updateObservedTime(time) {
+    _observeFixedTime(time) {
         if (time === this._observedTime) return;
         this._observedTime = time;
     }
@@ -87,7 +94,7 @@ class MapTime {
         const latLng = mapController.getCenter();
         const sunrise = this._sunTimes.getSunrise();
         const sunset = this._sunTimes.getSunset();
-        this._sunTimes = new SunTimes(latLng, new Date(this._observedTime), localTime.getUtcOffset());
+        this._sunTimes = new SunTimes(latLng, new Date(this._observedTime), localTime.getOffsets().dst);
 
         if (sunrise === this._sunTimes.getSunrise() && sunset === this._sunTimes.getSunset()) return;
         this._updateTimeOfDay();

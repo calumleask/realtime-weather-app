@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import localTime from "~/time/Clock";
+import localTime from "~/time/LocalTime";
 import mapTime from "~/time/MapTime";
 
 class WeatherDetailsContainer extends React.Component {
