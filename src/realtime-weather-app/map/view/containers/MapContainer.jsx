@@ -8,7 +8,6 @@ import mapWeather from "~/weather/MapWeather";
 import weatherService from "~/weather/WeatherService";
 import { getTimeZone, setActiveTimelineIndex } from "~/time/actions/TimeActions";
 
-import SearchBarContainer from "~/searchbar/view/containers/SearchBarContainer.jsx";
 import ZoomControlButtons from "~/map/view/components/ZoomControlButtons.jsx";
 import WeatherBarContainer from "~/weather/view/containers/WeatherBarContainer.jsx";
 import WeatherTimelineContainer from "~/weather/view/containers/WeatherTimelineContainer.jsx";
@@ -39,7 +38,6 @@ class MapContainer extends React.Component {
 		return (
 			<div className="map-container" onMouseDown={this._closeContextMenu} onWheel={this._closeContextMenu}>
 				<div id="map"/>
-				<SearchBarContainer/>
 				<ZoomControlButtons/>
 				<WeatherBarContainer/>
 				<WeatherTimelineContainer/>
