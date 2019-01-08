@@ -1,22 +1,22 @@
-import "eegeo.js";
+import "wrld.js";
 
 const config = require("~/config.json");
 
 const weathers = {
-    "default": L.eeGeo.themes.weather.Clear,
-    "clear": L.eeGeo.themes.weather.Clear,
-    "overcast": L.eeGeo.themes.weather.Overcast,
-    "foggy": L.eeGeo.themes.weather.Foggy,
-    "rainy": L.eeGeo.themes.weather.Rainy,
-    "snowy": L.eeGeo.themes.weather.Snowy
+    "default": L.Wrld.themes.weather.Clear,
+    "clear": L.Wrld.themes.weather.Clear,
+    "overcast": L.Wrld.themes.weather.Overcast,
+    "foggy": L.Wrld.themes.weather.Foggy,
+    "rainy": L.Wrld.themes.weather.Rainy,
+    "snowy": L.Wrld.themes.weather.Snowy
 };
 
 const times = {
-    "default": L.eeGeo.themes.time.Day,
-    "dawn": L.eeGeo.themes.time.Dawn,
-    "day": L.eeGeo.themes.time.Day,
-    "dusk": L.eeGeo.themes.time.Dusk,
-    "night": L.eeGeo.themes.time.Night
+    "default": L.Wrld.themes.time.Day,
+    "dawn": L.Wrld.themes.time.Dawn,
+    "day": L.Wrld.themes.time.Day,
+    "dusk": L.Wrld.themes.time.Dusk,
+    "night": L.Wrld.themes.time.Night
 };
 
 class MapController {
@@ -37,7 +37,7 @@ class MapController {
             indoorsEnabled: false,
         };
 
-        this._map = L.eeGeo.map("map", config.eegeo_api_key, options);
+        this._map = L.Wrld.map("map", config.wrld_api_key, options);
         this._map.attributionControl.addAttribution("weather provided by <a href='https://openweathermap.org/' target='_blank'>OpenWeatherMap</a>");
     }
 

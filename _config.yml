@@ -1,7 +1,7 @@
 # Site settings
 title: Real Time Weather
 description: > # 
-  Real time weather using eeGeo 3D maps
+  Real time weather using WRLD 3D maps
 baseurl: ""
 
 # Build settings
