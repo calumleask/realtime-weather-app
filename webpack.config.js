@@ -1,10 +1,9 @@
-var webpack = require('webpack');
-var path = require('path');
+const path = require('path');
 
-var BUILD_DIR = path.resolve(__dirname, 'src/assets/javascripts');
-var APP_DIR = path.resolve(__dirname, 'src/realtime-weather-app');
+const BUILD_DIR = path.resolve(__dirname, 'src/assets/javascripts');
+const APP_DIR = path.resolve(__dirname, 'src/realtime-weather-app');
 
-var config = {
+const config = {
   entry: {
     RealtimeWeatherApp: APP_DIR + '/index.jsx'
   },
@@ -15,24 +14,22 @@ var config = {
   },
 
   module : {
-    loaders : [
+    rules : [
       {
-        test : /\.jsx?/,
+        test : /\.jsx?$/,
         include : APP_DIR,
-        loader : 'babel'
-      },
-      {
-        test: /\.json$/, 
-        loader: 'json-loader'
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets:['@babel/preset-env']
+          }
+        }
       }
     ]
   },
-  
-  node: {
-    console: true,
-    fs: 'empty',
-    net: 'empty',
-    tls: 'empty'
+
+  resolve: {
+    extensions: ['.js', '.jsx']
   }
 };
 
