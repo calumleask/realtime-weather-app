@@ -17,9 +17,10 @@ export default class EventEmitter {
 
     off(event, callback) {
         if (!this._events[event]) return;
-        for (let i = this._events[event].length; i > 0; --i) {
+        for (let i = this._events[event].length; i >= 0; --i) {
             if (this._events[event][i] === callback) {
-            this._events[event].splice(i, 1);
+                this._events[event].splice(i, 1);
+                return;
             }
         }
     }
